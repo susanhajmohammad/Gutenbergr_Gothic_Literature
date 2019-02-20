@@ -1,0 +1,147 @@
+---
+title: "Gutenbergr Tutorial Notes"
+author: "Susan Hajmohammad"
+date: "February 13, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+library(gutenbergr)
+library(dplyr)
+
+
+#castle_otranto <- gutenberg_download(696)
+
+#frankenstein <- gutenberg_download(41445)
+
+#the_vampyre <- gutenberg_download(6087)
+
+#old_english_baron <- gutenberg_download(5182)
+
+#mysteries_udolpho <- gutenberg_download(3268)
+
+
+books <- gutenberg_download(c(696, 41445, 6087, 5182, 3268), meta_fields = "title")
+
+
+books %>% 
+  count(title)
+
+
+gutenberg_subjects %>%
+  filter(subject == "Gothic fiction")
+
+gutenberg_authors
+
+
+
+```
+
+
+```{r }
+
+
+library(tidytext)
+
+words <- books %>%
+  unnest_tokens(word, text)
+
+
+word_counts <- words %>%
+  anti_join(stop_words, by = "word") %>%
+  count(title, word, sort = TRUE)
+
+word_counts
+
+
+```
+
+
+
+```{r }
+
+
+gutenberg_metadata
+
+
+```
+
+
+Notes: 
+  
+  **Gutenbergr Vinnette** 
+   
+  For basics like title, author and language
+    
+  Use "gutenberg_metadata"
+      
+  ex: library(dplyr)
+
+  gutenberg_metadata %>%
+      filter(title == "Wuthering Heights")
+    
+  gutenberg_works(author == "Austen, Jane")
+    
+  "pre-filters" the data set 
+      
+      
+*Another way to filter*      
+      library(stringr)
+gutenberg_works(str_detect(author, "Austen"))
+
+
+*To download a book using the ID you can use*
+
+  wuthering_heights <- gutenberg_download(768)
+  wuthering_heights
+
+
+You can find book IDs on ???
+
+
+*How to filter by subjects*
+
+gutenberg_subjects %>%
+  filter(subject == "Detective and mystery stories")
+
+  
+*To find info on the authors* 
+
+gutenberg_authors()
+
+
+
+  
+  **Units of Analysis**
+  
+ *This is to make a dataframe of all the words*
+ 
+  library(tidytext)
+
+words <- books %>%
+  unnest_tokens(word, text)
+
+words
+
+
+*This counts the amount of times each word is used*
+
+word_counts <- words %>%
+  anti_join(stop_words, by = "word") %>%
+  count(title, word, sort = TRUE)
+
+word_counts
+
+    
+    
+
+
+
+
+
+
+
+```{r }
+
+```
